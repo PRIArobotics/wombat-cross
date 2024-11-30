@@ -31,20 +31,18 @@ extract-libs MOUNTPOINT='/mnt':
 build-docker-image:
 	docker build -t 'wombat-cross' .
 
+set positional-arguments
+
 [doc("start a docker container for cross-compilation
 	CONTAINER_NAME (=wombat_cross): the container's name, for outside access
 	VOLUME (=./develop): the folder to mount inside the container, where source code resides")]
-docker:
+docker *ARGS:
 	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
 		--volume "${VOLUME:-./develop}":/root/develop:rw \
-		wombat-cross
+		wombat-cross "$@"
 
 [doc("run a docker container for a single cross-compilation command
 	CONTAINER_NAME (=wombat_cross): the container's name, for outside access
 	VOLUME (=./develop): the folder to mount inside the container, where source code resides
 	ARGS: the rest of a gcc command line: `gcc {ARGS}`")]
-gcc *ARGS:
-	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
-		--volume "${VOLUME:-./develop}":/root/develop:rw \
-		wombat-cross \
-		aarch64-linux-gnu-gcc {{ARGS}}
+gcc *ARGS: (docker 'aarch64-linux-gnu-gcc' ARGS)
