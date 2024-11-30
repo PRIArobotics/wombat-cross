@@ -31,13 +31,13 @@ extract-libs MOUNTPOINT='/mnt':
 build-docker-image:
 	docker build -t 'wombat-cross' .
 
-docker NAME='wombat_cross':
-	docker run -it --rm --name '{{NAME}}' \
-		--volume ./develop:/root/develop:rw \
+docker:
+	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
+		--volume "${VOLUME:-./develop}":/root/develop:rw \
 		wombat-cross
 
 gcc *ARGS:
-	docker run -it --rm \
-		--volume ./develop:/root/develop:rw \
+	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
+		--volume "${VOLUME:-./develop}":/root/develop:rw \
 		wombat-cross \
 		aarch64-linux-gnu-gcc {{ARGS}}
