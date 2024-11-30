@@ -31,6 +31,11 @@ extract-libs MOUNTPOINT='/mnt':
 build-docker-image:
 	docker build -t 'wombat-cross' .
 
+# re-tag the built image to prepend user name and push to docker hub (requires access to account sillyfreak)
+push-docker-image:
+	docker image tag wombat-cross:latest sillyfreak/wombat-cross
+	docker push sillyfreak/wombat-cross
+
 set positional-arguments
 
 [doc("start a docker container for cross-compilation
