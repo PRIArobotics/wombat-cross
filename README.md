@@ -20,6 +20,17 @@ This will
 
 You can then copy that file to your Wombat.
 
+### Known differences from compiling with the Wombat web IDE (harrogate)
+
+Compiling on the Wombat automatically adds the file [`_init_helper.c`](https://github.com/kipr/harrogate/blob/v1.0.0/apps/compiler/compilation-environments/c/_init_helper.c).
+To my understanding, this file helps with correctly ordering output when invoking the program via the web IDE.
+If you have issues with mangled output, download that file and add it to your program and compile command, e.g. like this:
+
+```bash
+docker run -it --rm --volume ./develop:/root/develop:rw sillyfreak/wombat-cross \
+  aarch64-linux-gnu-gcc -Wall main.c _init_helper.c -lkipr -lm -o main -lz -lpthread
+```
+
 ## Development
 
 This repo contains resources and scripts for building this container.
