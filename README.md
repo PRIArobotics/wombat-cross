@@ -4,26 +4,43 @@ A docker container for cross-compiling programs for the Wombat.
 
 ## Quick start
 
-If you have [`just`](https://just.systems/man/en/) - and, of course, [Docker](https://docs.docker.com/get-started/) - installed, you can get started by running e.g.
+This container is [published on Docker Hub](https://hub.docker.com/r/sillyfreak/wombat-cross).
+With [Docker](https://docs.docker.com/get-started/) installed, you can e.g. run the following:
+
+```bash
+docker run -it --rm --volume ./develop:/root/develop:rw sillyfreak/wombat-cross \
+  aarch64-linux-gnu-gcc -Wall main.c -lkipr -lm -o main -lz -lpthread
+```
+
+This will
+
+- run the container and clean it up afterwards,
+- give the container access to the `./develop` folder
+- call the cross-compilation command `aarch64-linux-gnu-gcc -Wall ...` to cross-compile the C file `./develop/main.c` and store the result in `./develop/main`
+
+You can then copy that file to your Wombat.
+
+## Development
+
+This repo contains resources and scripts for building this container.
+You can use them to custimize the container, or update it if this repo goes unmaintained and becomes outdated.
+
+If you have [`just`](https://just.systems/man/en/) installed, you can get started by running e.g.
 
 ```bash
 just build-docker-image
 just gcc -Wall main.c -lkipr -lm -o main -lz -lpthread
 ```
 
-This will call the command `aarch64-linux-gnu-gcc -Wall ...` to cross-compile the C file `./develop/main.c` (since that is the default volume) and store the result in `./develop/main`.
-You can then copy that file to your Wombat.
+The first command will re-build the container; the second will cross-compile just like the `docker run` command above.
 
-## Usage
-
-This repo contains a Dockerfile and scripts to prepare for building a docker image from it.
 Without `just`, you can still copy the commands from the Justfile to run them.
-
 The commands are written with a Linux machine in mind; they may or may not work on other platforms.
 
 ### Preparations
 
-> You won't need to run these steps unless this repo goes unmaintained and becomes outdated.
+> You won't need to run these steps unless this repo has become outdated.
+> To simply customize the container, these steps aren't necessary.
 
 Since it's hard to compile all libraries needed to compile Wombat programs, they are included in this repo in binary form.
 To obtain them freshly, you can run the following commands:
@@ -39,9 +56,10 @@ just extract-libs
 ```
 
 If you look at these scripts in the Justfile, there are a few hardcoded values:
+
 - the Wombat image URL, including version number
 - the libwallaby and create3 URLs, including version numbers and file names
-- the `offset` in the `mount` command, which can be obtained via `fdisk -lu tmp/wombat.img` (after running command 1.)
+- the `offset` in the `mount` command, which can be obtained via `fdisk -lu tmp/wombat.img` (after running command 1.). We're interested in the start of the second (ext4) partition.
 
 Updating the image will require adjusting these values.
 
