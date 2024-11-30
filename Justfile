@@ -40,8 +40,9 @@ set positional-arguments
 
 [doc("start a docker container for cross-compilation
 	CONTAINER_NAME (=wombat_cross): the container's name, for outside access
-	VOLUME (=./develop): the folder to mount inside the container, where source code resides")]
-docker *ARGS:
+	VOLUME (=./develop): the folder to mount inside the container, where source code resides
+	ARGS: a command to run in the container; if not given, an interactive shell is started")]
+run *ARGS:
 	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
 		--volume "${VOLUME:-./develop}":/root/develop:rw \
 		wombat-cross "$@"
@@ -50,4 +51,6 @@ docker *ARGS:
 	CONTAINER_NAME (=wombat_cross): the container's name, for outside access
 	VOLUME (=./develop): the folder to mount inside the container, where source code resides
 	ARGS: the rest of a gcc command line: `gcc {ARGS}`")]
-gcc *ARGS: (docker 'aarch64-linux-gnu-gcc' ARGS)
+gcc *ARGS: (run 'aarch64-linux-gnu-gcc' ARGS)
+
+# aarch64-linux-gnu-gcc --print-file-name=libkipr.so

@@ -81,12 +81,12 @@ It will be made available to the container so that source files can be read and 
 
 ```bash
 # by default, a folder named "develop" is added to the container
-just docker
+just run
 # mount a different folder
-VOLUME=/some/other/folder just docker
+VOLUME=/some/other/folder just run
 
 # you can also specify a command to run in the container, instead of starting a shell
-just docker echo "Hello World"
+just run echo "Hello World"
 ```
 
 If you don't want to mount a folder or want to customize the container in other ways, copy the command directly and make your changes.
