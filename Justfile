@@ -44,7 +44,7 @@ set positional-arguments
 	ARGS: a command to run in the container; if not given, an interactive shell is started")]
 run *ARGS:
 	docker run -it --rm --name "${CONTAINER_NAME:-wombat_cross}" \
-		--volume "${VOLUME:-./develop}":/root/develop:rw \
+		--volume "${VOLUME:-./develop}":/home/kipr:rw \
 		wombat-cross "$@"
 
 [doc("run a docker container for a single cross-compilation command

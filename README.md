@@ -8,7 +8,7 @@ This container is [published on Docker Hub](https://hub.docker.com/r/sillyfreak/
 With [Docker](https://docs.docker.com/get-started/) installed, you can e.g. run the following:
 
 ```bash
-docker run -it --rm --volume ./develop:/root/develop:rw sillyfreak/wombat-cross \
+docker run -it --rm --volume ./develop:/home/kipr:rw sillyfreak/wombat-cross \
   aarch64-linux-gnu-gcc -Wall main.c -lkipr -lm -o main -lz -lpthread
 ```
 
@@ -27,7 +27,7 @@ To my understanding, this file helps with correctly ordering output when invokin
 If you have issues with mangled output, download that file and add it to your program and compile command, e.g. like this:
 
 ```bash
-docker run -it --rm --volume ./develop:/root/develop:rw sillyfreak/wombat-cross \
+docker run -it --rm --volume ./develop:/home/kipr:rw sillyfreak/wombat-cross \
   aarch64-linux-gnu-gcc -Wall main.c _init_helper.c -lkipr -lm -o main -lz -lpthread
 ```
 
